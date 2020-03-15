@@ -7,9 +7,8 @@ var food;
 
 function setup() {
     createCanvas(win_width, win_height);
-    s = new Snake();
+    s = new Snake(100);
     food = createVector(Math.floor(random(win_width / cell_size)) * cell_size, Math.floor(random(win_height / cell_size)) * cell_size);
-    console.log(food.x + ' ' + food.y);
     frameRate(8);
 }
 
@@ -28,7 +27,6 @@ function draw() {
     }
     s.draw();
 
-    drawWords(20);
 }
 /////////////////////////////////GRAW END
 function draw_grid() { //  рисуем сетку
@@ -42,12 +40,7 @@ function draw_grid() { //  рисуем сетку
     }
 }
 
-function drawWords(x) {
-    fill(255, 255, 0);
-    text('Num of snake' + '1', x, 10);
 
-
-}
 function keyPressed() {  // отслеживание нажатий клавиш
     if (keyCode === UP_ARROW) { s.dir(0, -1); }
     if (keyCode === DOWN_ARROW) { s.dir(0, 1); }
@@ -63,15 +56,21 @@ function distanse(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 }
 
-function Snake() {  // класс змеи
+function Snake(n = 0) {  // класс змеи,  n - длинна хвоста
     this.x = 0;
     this.y = 0;
 
     this.xspeed = 1;
     this.yspeed = 0;
 
-    this.total = 0; // длинна змейки
+    this.total = n; // длинна змейки
     this.tail = []; // массив для хвоста змейки 
+    if (this.total >= 1) {
+        for (var i = 0; i < this.total; i++) {
+
+            this.tail[i] = createVector(this.x, this.y);
+        }
+    }
 
     this.dir = function (x, y) {
         this.xspeed = x;
@@ -109,8 +108,7 @@ function Snake() {  // класс змеи
     }
 
     this.draw = function () {  // функция отрисовки поля
-        fill(255, 0, 0);
-        rect(food.x, food.y, cell_size, cell_size);
+
         fill(255);
         for (i = 0; i < this.tail.length; i++) {
 
@@ -120,6 +118,8 @@ function Snake() {  // класс змеи
 
         fill(0, 255, 0);
         text(this.x / cell_size + ' ' + this.y / cell_size, this.x, this.y);
+        fill(255, 0, 0);
+        rect(food.x, food.y, cell_size, cell_size);
 
     }
 }
