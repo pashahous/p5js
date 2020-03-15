@@ -1,13 +1,13 @@
 let win_width = 400;
 let win_height = 400; //
 let cell_size = 20; //cell size
-
+let run = true;
 var food;
 
 
 function setup() {
     createCanvas(win_width, win_height);
-    s = new Snake(100);
+    s = new Snake();
     food = createVector(Math.floor(random(win_width / cell_size)) * cell_size, Math.floor(random(win_height / cell_size)) * cell_size);
     frameRate(8);
 }
@@ -21,12 +21,15 @@ function creat_food() {
 function draw() {
     background(51);
     draw_grid();
+
     s.update();
+    s.checkCollision();
     if (s.eat(food)) {
         creat_food();
     }
     s.draw();
 
+    // console.log('GAME OVER');
 }
 /////////////////////////////////GRAW END
 function draw_grid() { //  рисуем сетку
@@ -47,10 +50,7 @@ function keyPressed() {  // отслеживание нажатий клавиш
     if (keyCode === RIGHT_ARROW) { s.dir(1, 0); }
     if (keyCode === LEFT_ARROW) { s.dir(-1, 0); }
 }
-function Food() {    // класс еды
 
-
-}
 
 function distanse(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
@@ -96,7 +96,19 @@ function Snake(n = 0) {  // класс змеи,  n - длинна хвоста
         if (this.y > win_height - cell_size) { this.y = win_height - cell_size };
     }
 
+    this.checkCollision = function () {  //проверка столкновения головы с телом
+        for (var i = 0; i < this.tail.length; i++) {
+            var pos = this.tail[i];
+            var d = distanse(this.x, this.y, pos.x, pos.y);
+            if (d < 1) {
+                this.tail = [];
+                this.total = 0;
+                console.log('GAME OVER');
+            }
 
+        }
+
+    }
     this.eat = function (pos) {   // функция проверяет находится ли голова над едой
         var d = distanse(this.x, this.y, pos.x, pos.y);
         if (d < 1) {
