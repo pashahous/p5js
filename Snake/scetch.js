@@ -45,10 +45,10 @@ function draw_grid() { //  рисуем сетку
 
 
 function keyPressed() {  // отслеживание нажатий клавиш
-    if (keyCode === UP_ARROW) { s.dir(0, -1); }
-    if (keyCode === DOWN_ARROW) { s.dir(0, 1); }
-    if (keyCode === RIGHT_ARROW) { s.dir(1, 0); }
-    if (keyCode === LEFT_ARROW) { s.dir(-1, 0); }
+    if (keyCode === UP_ARROW && s.yspeed != 1) { s.dir(0, -1); }
+    if (keyCode === DOWN_ARROW && s.yspeed != -1) { s.dir(0, 1); }
+    if (keyCode === RIGHT_ARROW && s.xspeed != -1) { s.dir(1, 0); }
+    if (keyCode === LEFT_ARROW && s.xspeed != 11) { s.dir(-1, 0); }
 }
 
 
